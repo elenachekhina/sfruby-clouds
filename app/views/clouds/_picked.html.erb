@@ -1,6 +1,9 @@
 <% # locals: (cloud: @picked_cloud) %>
 <div
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 overflow-y-auto"
+  data-controller="navigator"
+  data-navigator-url-value="<%= root_path %>"
+  data-action="click->navigator#go:self"
 >
   <%= link_to root_url,
       class: "absolute top-2 right-2 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-red-600 hover:border-red-600 transition-all duration-300 hover:scale-110",
@@ -60,7 +63,11 @@
             <% end %>
 
             <button
-              class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:from-red-500 hover:to-pink-500"
+              class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:from-red-500 hover:to-pink-500 cursor-pointer"
+              data-controller="sharer"
+              data-sharer-image-url-value="<%= cloud_image_url(cloud_id: cloud.participant.slug) %>"
+              data-sharer-user-name-value="<%= cloud.participant.full_name %>"
+              data-action="sharer#share:prevent"
             >
               <svg
                 class="w-5 h-5"

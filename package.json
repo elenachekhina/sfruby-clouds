@@ -10,13 +10,20 @@
     "vite-plugin-ruby": "^5.1.1"
   },
   "dependencies": {
+    "@anycable/turbo-stream": "^0.8.1",
+    "@anycable/web": "^1.1.0",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo": "^8.0.18",
     "@rails/actiontext": "^8.0.0",
     "@rails/activestorage": "^8.0.0",
     "@rails/request.js": "^0.0.11",
     "@tailwindcss/postcss": "^4.0.0",
     "@tailwindcss/vite": "^4.1.1",
     "fslightbox": "^3.4.2",
+    "idiomorph": "^0.7.4",
+    "stimulus-vite-helpers": "^3.1.0",
     "trix": "^2.1.8",
+    "turbo-view-transitions": "^0.3.0",
     "typescript": "^5.6.3"
   },
   "scripts": {

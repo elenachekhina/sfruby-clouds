@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  resources :clouds, only: [:index, :show]
+  resources :clouds, only: [:index, :show] do
+    resource :image, only: [:show]
+  end
 
   scope "/c/:access_token" do
     resource :participant
