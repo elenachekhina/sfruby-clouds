@@ -8,8 +8,8 @@ module Webhooks
     def create
       events = JSON.parse(params[:mandrill_events]).select do
         (it["event"] == "open" || it["event"].in?(BOUNCED_EVENTS)) &&
-          it.dig("metadata", "invitation_id").present?
-      end.group_by { it["metadata"]["invitation_id"] }
+          it.dig("msg", "metadata", "invitation_id").present?
+      end.group_by { it.dig("msg", "metadata", "invitation_id") }
 
       Invitation.preload(:participant).where(id: events.keys).find_each do |invitation|
         events[invitation.id].each do |event|

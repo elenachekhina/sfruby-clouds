@@ -12,6 +12,7 @@ describe "/webhooks/mandrill" do
       [
         {
           "event" => "open",
+          "ts" => 1365109999,
           "msg" => {
             "ts" => 1365109999,
             "subject" => "Test Subject",
@@ -24,16 +25,15 @@ describe "/webhooks/mandrill" do
               }
             ],
             "_id" => "abc123def456ghi789",
-            "state" => "sent"
-          },
-          "ts" => 1365109999,
-          "_id" => "abc123def456ghi789",
-          "metadata" => {
-            "invitation_id" => invitation.id
+            "state" => "sent",
+            "metadata" => {
+              "invitation_id" => invitation.id
+            }
           }
         },
         {
           "event" => "hard_bounce",
+          "ts" => 1365110000,
           "msg" => {
             "ts" => 1365110000,
             "subject" => "Test Subject",
@@ -44,12 +44,10 @@ describe "/webhooks/mandrill" do
             "bgtools_code" => 10,
             "diag" => "smtp;550 5.1.1 The email account that you tried to reach does not exist.",
             "_id" => "def456ghi789jkl012",
-            "state" => "bounced"
-          },
-          "ts" => 1365110000,
-          "_id" => "def456ghi789jkl012",
-          "metadata" => {
-            "invitation_id" => another_invitation.id
+            "state" => "bounced",
+            "metadata" => {
+              "invitation_id" => another_invitation.id
+            }
           }
         }
       ]
