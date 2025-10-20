@@ -7,5 +7,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "LLM"
   inflect.acronym "SF"
 
-  inflect.uncountable %w[debug]
+  inflect.uncountable %w[debug mandrill]
 end

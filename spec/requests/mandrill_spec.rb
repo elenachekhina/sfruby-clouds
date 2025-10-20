@@ -1,17 +1,66 @@
 require "rails_helper"
 
-xdescribe "/mandrill" do
-  let_it_be(:user) { create(:user) }
+describe "/webhooks/mandrill" do
+  let_it_be(:participant) { create(:participant, full_name: "Vova", email: "vova@sf.test") }
+  let_it_be(:invitation) { participant.invitations.create! }
 
-  before { sign_in(user) }
+  let_it_be(:another_participant) { create(:participant, full_name: "John", email: "john@sf.test") }
+  let_it_be(:another_invitation) { another_participant.invitations.create! }
 
   describe "POST /create" do
-    let(:form_params) { {title: "That's a cool story"} }
+    let(:events) do
+      [
+        {
+          "event" => "open",
+          "msg" => {
+            "ts" => 1365109999,
+            "subject" => "Test Subject",
+            "email" => "vova@sf.test",
+            "sender" => "noreply@example.com",
+            "tags" => ["invitation"],
+            "opens" => [
+              {
+                "ts" => 1365109999
+              }
+            ],
+            "_id" => "abc123def456ghi789",
+            "state" => "sent"
+          },
+          "ts" => 1365109999,
+          "_id" => "abc123def456ghi789",
+          "metadata" => {
+            "invitation_id" => invitation.id
+          }
+        },
+        {
+          "event" => "hard_bounce",
+          "msg" => {
+            "ts" => 1365110000,
+            "subject" => "Test Subject",
+            "email" => "john@sf.test",
+            "sender" => "noreply@example.com",
+            "tags" => ["invitation"],
+            "bounce_description" => "bad_mailbox",
+            "bgtools_code" => 10,
+            "diag" => "smtp;550 5.1.1 The email account that you tried to reach does not exist.",
+            "_id" => "def456ghi789jkl012",
+            "state" => "bounced"
+          },
+          "ts" => 1365110000,
+          "_id" => "def456ghi789jkl012",
+          "metadata" => {
+            "invitation_id" => another_invitation.id
+          }
+        }
+      ]
+    end
 
-    subject { post proposals_url, params: {proposal: form_params} }
+    subject { post webhooks_mandrill_url, params: {mandrill_events: events.to_json}, as: :json }
 
-    it "creates a new proposal"
-
-    it "notifies the author"
+    it "updates invitations statuses" do
+      expect { subject }.to change { invitation.reload.status }.from("sent").to("opened")
+        .and change { another_invitation.reload.status }.from("sent").to("bounced")
+        .and change { another_participant.reload.email_notifications_enabled }.from(true).to(false)
+    end
   end
 end

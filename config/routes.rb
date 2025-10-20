@@ -28,6 +28,10 @@ Rails.application.routes.draw do
     get "/", to: "homes#show"
   end
 
+  namespace :webhooks do
+    resource :mandrill, only: [:create]
+  end
+
   # Defines the root path route ("/")
   root "clouds#index"
 end

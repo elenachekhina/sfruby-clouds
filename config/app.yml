@@ -9,5 +9,5 @@ test:
   <<: *default
 
 production: &production
-  host: "cfp.sfruby.com"
+  host: "clouds.sfruby.com"
   port: 443

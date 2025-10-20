@@ -25,13 +25,13 @@ class Avo::Actions::ImportParticipants < Avo::BaseAction
       next skipped[:not_approved] += 1 if row[:approval_status]&.downcase&.strip != "approved"
 
       email = row[:email]&.strip&.downcase
-      next skipped[:no_email] += 1 unless email.present?
+      next skipped[:no_email] += 1 if email.blank?
 
       first_name = row[:first_name]&.strip
       last_name = row[:last_name]&.strip
 
       full_name = [first_name, last_name].compact.join(" ").presence
-      next skipped[:no_name] += 1 unless full_name.present?
+      next skipped[:no_name] += 1 if full_name.blank?
 
       ticket_type = row[:ticket_name]&.strip
 
