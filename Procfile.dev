@@ -1,2 +1,2 @@
-web: bin/rails s -p 3000
+web: HTTP_PORT=3000 TARGET_PORT=3001 thrust bin/rails s -p 3001
 vite: bin/vite dev

@@ -8,6 +8,9 @@ gem "propshaft"
 gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
+# Use Thruster w/ AnyCable
+gem "anycable-thruster"
+gem "anycable-rails"
 
 # Use the database-backed adapters for Active Job
 gem "solid_queue"

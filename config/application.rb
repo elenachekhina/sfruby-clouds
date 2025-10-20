@@ -83,5 +83,7 @@ module SFRubyClouds
       config.view_component.previews.paths << Rails.root.join("lookbook/previews")
       config.lookbook.preview_controller = "LookbookController"
     end
+
+    config.turbo.signed_stream_verifier_key = AnyCable.config.secret
   end
 end
