@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     if Rails.application.config.lookbook_enabled
       mount Lookbook::Engine, at: "/lookbook"
     end
+
+    mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 
   get "up" => "rails/health#show", :as => :rails_health_check

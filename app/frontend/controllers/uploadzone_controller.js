@@ -35,6 +35,10 @@ export default class extends Controller {
     event.preventDefault();
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
     [...files].forEach((f) => {
+      if (f.size > 10 * 1024 * 1024) {
+        alert("File size must be less than 10MB");
+        return;
+      }
       const upload = new DirectUpload(f, "/rails/active_storage/direct_uploads", this);
 
       this.previewTarget.src = URL.createObjectURL(f);

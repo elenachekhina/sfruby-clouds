@@ -14,6 +14,7 @@ gem "anycable-rails"
 
 # Use the database-backed adapters for Active Job
 gem "solid_queue"
+gem "mission_control-jobs"
 
 # Active Record extensions
 gem "store_model"
