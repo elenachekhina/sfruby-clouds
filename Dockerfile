@@ -1,10 +1,8 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.4.3
+ARG RUBY_VERSION=3.4.4
 FROM ruby:$RUBY_VERSION-slim AS base
-
-LABEL fly_launch_runtime="rails"
 
 # Rails app lives here
 WORKDIR /rails
@@ -23,8 +21,8 @@ RUN gem update --system --no-document && \
 FROM base AS build
 
 # Install packages needed to build gems and node modules
-RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
-    --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
+RUN --mount=type=cache,id=s/5664cc3e-976e-4d50-8d6b-d65cf44c8ccc-/var/cache/apt,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=s/5664cc3e-976e-4d50-8d6b-d65cf44c8ccc-/var/lib/apt,target=/var/lib/apt,sharing=locked \
     apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git curl pkg-config libyaml-dev
 
@@ -32,7 +30,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 COPY --link .ruby-version Gemfile Gemfile.lock ./
 COPY --link gemfiles/rubocop.gemfile gemfiles/
 
-RUN --mount=type=cache,id=bld-gem-cache,sharing=locked,target=/srv/vendor \
+RUN --mount=type=cache,id=s/5664cc3e-976e-4d50-8d6b-d65cf44c8ccc-/srv/vendor,target=/srv/vendor,sharing=locked \
     bundle config set app_config .bundle && \
     bundle config set path /srv/vendor && \
     bundle install && \
@@ -45,7 +43,7 @@ RUN --mount=type=cache,id=bld-gem-cache,sharing=locked,target=/srv/vendor \
 # Install NPM modules
 COPY --link package.json bun.lock ./
 COPY --link bin/bun bin/bun
-RUN --mount=type=cache,id=bld-npm-cache,target=/root/.npm \
+RUN --mount=type=cache,id=s/5664cc3e-976e-4d50-8d6b-d65cf44c8ccc-/root/.npm,target=/root/.npm,sharing=locked \
     bin/bun install
 
 # Copy application code
@@ -62,8 +60,8 @@ RUN SECRET_KEY_BASE_DUMMY=1 \
 FROM base
 
 # Install packages needed for deployment
-RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
-    --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
+RUN --mount=type=cache,id=s/5664cc3e-976e-4d50-8d6b-d65cf44c8ccc-/var/cache/apt,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=s/5664cc3e-976e-4d50-8d6b-d65cf44c8ccc-/var/lib/apt,target=/var/lib/apt,sharing=locked \
     apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libsqlite3-0 libyaml-0-2
 
@@ -81,7 +79,5 @@ USER 1000:1000
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start the server by default, this can be overwritten at runtime
-VOLUME /data
 EXPOSE 80
 CMD ["./bin/thrust", "./bin/rails", "server"]
