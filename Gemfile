@@ -35,11 +35,15 @@ gem "anyway_config"
 
 gem "after_commit_everywhere"
 
+gem "nanoid"
+
+# Integrations
+gem "httparty"
+
 # Admin panel [https://docs.avohq.io/]
 gem "avo", ">= 3.2"
 
 gem "friendly_id", "~> 5.5.0"
-gem "nanoid"
 gem "csv"
 
 # Freeze string literals automatically

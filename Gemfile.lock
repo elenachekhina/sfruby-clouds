@@ -210,6 +210,10 @@ GEM
       turbo-rails
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
+    httparty (0.23.2)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     inline_svg (1.10.0)
@@ -263,6 +267,8 @@ GEM
     mini_mime (1.1.5)
     minitest (5.26.0)
     msgpack (1.8.0)
+    multi_xml (0.7.2)
+      bigdecimal (~> 3.1)
     mutex_m (0.3.0)
     nanoid (2.0.0)
     net-imap (0.5.11)
@@ -503,6 +509,7 @@ DEPENDENCIES
   friendly_id (~> 5.5.0)
   fuubar
   hotwire-rails
+  httparty
   lefthook
   letter_opener_web
   lookbook

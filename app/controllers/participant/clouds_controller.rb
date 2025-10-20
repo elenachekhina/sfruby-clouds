@@ -14,6 +14,8 @@ class Participant
         it.image.attach(blob)
       end
 
+      CloudGenerationJob.perform_later(cloud)
+
       redirect_to participant_cloud_path(access_token: @participant.access_token, id: cloud.id)
     end
 
