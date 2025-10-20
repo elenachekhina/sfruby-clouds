@@ -29,6 +29,7 @@ export default class extends Controller {
     this.dropAreaTarget.classList.remove("hidden");
     this.inputTarget.value = "";
     this.submitBtnTarget.disabled = true;
+    this.inputTarget.disabled = false;
   }
 
   acceptFiles(event) {
@@ -51,6 +52,7 @@ export default class extends Controller {
         } else {
           this.submitBtnTarget.disabled = false;
           this.blobInputTarget.value = blob.signed_id;
+          this.inputTarget.disabled = true;
         }
       });
     });
