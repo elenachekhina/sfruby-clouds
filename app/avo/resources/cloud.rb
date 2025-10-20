@@ -21,20 +21,8 @@ class Avo::Resources::Cloud < Avo::BaseResource
     field :image, as: :file, is_image: true, display_filename: true
     field :generated_image, as: :file, is_image: true, display_filename: true
 
-    field :state, as: :badge, sortable: true do
-      case record.state
-      when "generated"
-        "Generated"
-      when "nsfw_checked"
-        "NSFW Checked"
-      when "uploaded"
-        "Uploaded"
-      when "failed"
-        "Failed"
-      else
-        record.status.titleize
-      end
-    end
+    field :state, as: :select, enum: ::Cloud.states
+    field :failure_reason
 
     field :created_at, as: :date_time, readonly: true, sortable: true
     field :updated_at, as: :date_time, readonly: true, sortable: true

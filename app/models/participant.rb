@@ -18,4 +18,6 @@ class Participant < ApplicationRecord
   end
 
   def cloud_generations_remained = cloud_generations_quota - cloud_generations_count
+
+  def cloud_generations_remained? = cloud_generations_remained > 0
 end

@@ -15,6 +15,8 @@ gem "solid_queue"
 # Active Record extensions
 gem "store_model"
 
+gem "hotwire-rails"
+
 # The only viable asset pipeline for Rails [https://vite-ruby.netlify.app/guide/rails.html]
 gem "vite_rails"
 

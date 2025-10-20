@@ -172,6 +172,10 @@ GEM
       ruby-progressbar (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    hotwire-rails (0.1.3)
+      rails (>= 6.0.0)
+      stimulus-rails
+      turbo-rails
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
     i18n (1.14.7)
@@ -398,6 +402,8 @@ GEM
     standard-rails (1.4.0)
       lint_roller (~> 1.0)
       rubocop-rails (~> 2.31.0)
+    stimulus-rails (1.3.4)
+      railties (>= 6.0.0)
     store_model (4.2.1)
       activerecord (>= 7.0)
     stringio (3.1.7)
@@ -461,6 +467,7 @@ DEPENDENCIES
   freezolite
   friendly_id (~> 5.5.0)
   fuubar
+  hotwire-rails
   lefthook
   letter_opener_web
   lookbook

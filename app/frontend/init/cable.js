@@ -5,8 +5,7 @@ const logLevel = document.documentElement.classList.contains("debug")
   : "error";
 
 const cable = createCable({
-  logLevel,
-  websocketAuthStrategy: "sub-protocol"
+  logLevel
 });
 
 export default cable;

@@ -26,37 +26,35 @@
     <% end %>
   </div>
 
-  <div class="p-8">
-    <!-- Error messages -->
-    <% if @initial_error.present? || @errors&.dig(:photo).present? %>
-      <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p class="text-red-700"><%= @initial_error || @errors[:photo] %></p>
-      </div>
-    <% end %>
-
+  <div class="p-8" data-controller="uploadzone">
     <!-- Show attempts exhausted message -->
-    <%= form_with url: request.path, multipart: true, id: "upload-form" do |form| %>
+    <%= form_for participant.clouds.new, url: participant_clouds_path(access_token: participant.access_token), allow_method_names_outside_object: true do |form| %>
       <!-- Upload area -->
       <div
         id="upload-area"
         class="relative border-2 border-dashed rounded-xl p-8 text-center transition-colors border-gray-300 hover:border-gray-400"
+        data-action="click->uploadzone#trigger drop->uploadzone#acceptFiles"
       >
-        <%= form.file_field :photo,
-              accept: "image/jpeg,image/jpg,image/png,image/webp",
-              class: "hidden",
-              id: "file-input" %>
+        <%= form.file_field :image,
+          accept: "image/jpeg,image/jpg,image/png,image/webp",
+          class: "hidden",
+          data: {uploadzone_target: "input", action: "change->uploadzone#acceptFiles"} %>
 
-        <div id="preview-area" class="space-y-4" style="display: none;">
+        <%= form.hidden_field :blob_signed_id, data: {uploadzone_target: "blobInput"} %>
+
+        <div data-uploadzone-target="previewArea" class="space-y-4 hidden">
           <div class="relative inline-block">
             <img
               id="preview-image"
               alt="Preview"
               class="max-w-full max-h-64 rounded-lg shadow-lg mx-auto"
-            />
+              data-uploadzone-target="preview"
+            >
             <button
               type="button"
               id="remove-preview"
               class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+              data-action="click->uploadzone#reset:prevent:stop"
             >
               <svg
                 class="w-5 h-5"
@@ -73,12 +71,19 @@
               </svg>
             </button>
           </div>
+          <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+            <div
+              data-uploadzone-target="progress"
+              class="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-transform duration-300 ease-out"
+              style="width: 100%; transform: translateX(-100%)"
+            ></div>
+          </div>
           <p class="text-sm text-gray-600">
             Click submit to generate your cloud card
           </p>
         </div>
 
-        <div id="upload-placeholder">
+        <div data-uploadzone-target="dropArea">
           <svg
             class="mx-auto h-12 w-12 text-gray-400 mb-4"
             fill="none"
@@ -110,14 +115,13 @@
 
       <!-- Submit button -->
       <div class="mt-6 flex justify-center">
-        <button
-          type="submit"
-          id="submit-button"
-          disabled
-          class="px-8 py-3 rounded-lg font-semibold transition-all bg-gray-200 text-gray-400 cursor-not-allowed"
-        >
-          <%= regeneration ? "Regenerate My Cloud Card" : "Generate My Cloud Card" %>
-        </button>
+        <%= form.submit(
+          regeneration ? "Regenerate My Cloud Card" : "Generate My Cloud Card",
+          id: "submit-button",
+          disabled: true,
+          class: "px-8 py-3 rounded-lg font-semibold transition-all bg-gradient-to-r bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed",
+          data: {uploadzone_target: "submitBtn"}
+        ) %>
       </div>
 
       <!-- Instructions -->
