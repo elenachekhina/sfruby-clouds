@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@import "./fonts.css";
+
+@source "../../views";
+
+/* Custom utility classes and theme extensions */
+@theme {
+    --color-background: 0 0% 100%;
+    --color-foreground: 222.2 84% 4.9%;
+    --color-card: 0 0% 100%;
+    --color-card-foreground: 222.2 84% 4.9%;
+    --color-popover: 0 0% 100%;
+    --color-popover-foreground: 222.2 84% 4.9%;
+    --color-primary: 221.2 83.2% 53.3%;
+    --color-primary-foreground: 210 40% 98%;
+    --color-secondary: 210 40% 96.1%;
+    --color-secondary-foreground: 222.2 47.4% 11.2%;
+    --color-muted: 210 40% 96.1%;
+    --color-muted-foreground: 215.4 16.3% 46.9%;
+    --color-accent: 210 40% 96.1%;
+    --color-accent-foreground: 222.2 47.4% 11.2%;
+    --color-destructive: 0 84.2% 60.2%;
+    --color-destructive-foreground: 210 40% 98%;
+    --color-border: 214.3 31.8% 91.4%;
+    --color-input: 214.3 31.8% 91.4%;
+    --color-ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    --color-*-dark: initial;
+    --color-background-dark: 222.2 84% 4.9%;
+    --color-foreground-dark: 210 40% 98%;
+    --color-card-dark: 222.2 84% 4.9%;
+    --color-card-foreground-dark: 210 40% 98%;
+    --color-popover-dark: 222.2 84% 4.9%;
+    --color-popover-foreground-dark: 210 40% 98%;
+    --color-primary-dark: 217.2 91.2% 59.8%;
+    --color-primary-foreground-dark: 222.2 47.4% 11.2%;
+    --color-secondary-dark: 217.2 32.6% 17.5%;
+    --color-secondary-foreground-dark: 210 40% 98%;
+    --color-muted-dark: 217.2 32.6% 17.5%;
+    --color-muted-foreground-dark: 215 20.2% 65.1%;
+    --color-accent-dark: 217.2 32.6% 17.5%;
+    --color-accent-foreground-dark: 210 40% 98%;
+    --color-destructive-dark: 0 62.8% 30.6%;
+    --color-destructive-foreground-dark: 210 40% 98%;
+    --color-border-dark: 217.2 32.6% 17.5%;
+    --color-input-dark: 217.2 32.6% 17.5%;
+    --color-ring-dark: 224.3 76.3% 48%;
+
+    --font-family-martian: "Martian Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-family-mono-martian: "Martian Mono", "Courier New", monospace;
+
+    --animate-fade-in: fade-in 0.5s ease-in-out;
+    --animate-slide-in: slide-in 0.5s ease-out;
+    --animate-scale-in: scale-in 0.3s ease-out;
+}
+
+@layer base {
+    * {
+        border-color: hsl(var(--color-border));
+    }
+
+    body {
+        background-color: hsl(var(--color-background));
+        color: hsl(var(--color-foreground));
+        font-family:
+            "Martian Grotesk",
+            "Inter",
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            "Helvetica Neue",
+            Arial,
+            sans-serif;
+        font-weight: 300;
+    }
+}
+
+/* Animation utilities */
+@layer utilities {
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-in {
+        from {
+            transform: translateY(10px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes scale-in {
+        from {
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+}

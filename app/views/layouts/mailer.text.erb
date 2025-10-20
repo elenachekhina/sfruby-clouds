@@ -1,0 +1,12 @@
+San Francisco Ruby Conference<% content_for?(:title) ? " – #{yield :title}" : "" %>
+==========================================================
+
+<%= yield %>
+
+---
+San Francisco Ruby Conference
+November 19-21, 2025
+
+<% if participant %>
+This email was sent to <%= participant.email %> because you're registered for SF Ruby Conference 2025.
+<% end %>

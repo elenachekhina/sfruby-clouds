@@ -1,0 +1,39 @@
+<div class="greeting">
+  Hi <%= participant.full_name %>! 👋
+</div>
+
+<div class="body-text">
+  We're thrilled to have you at the <strong>San Francisco Ruby Conference</strong>!
+</div>
+
+<div class="body-text">
+  Let the fun begin now! Help us kick things off by creating your unique Cloud Card: your photo will become a whimsical character floating over San Francisco’s iconic skyline ☁️✨
+</div>
+
+<div class="body-text">Share your card on social media or with friends and colleagues to invite others to join us in the clouds!
+</div>
+
+<div class="body-text" style="text-align: center; font-size: 18px; font-weight: bold; color: #1f2937;">
+  Click below to create your card:
+</div>
+
+<!-- CTA Button -->
+<div style="text-align: center; margin: 30px 0;">
+  <a href="<%= @url %>" class="cta-button">
+    Create My Cloud Card
+  </a>
+</div>
+
+<!-- URL for copying -->
+<div class="body-text" style="font-size: 14px; color: #6b7280;">
+  Or copy and paste this URL into your browser:
+</div>
+<div class="url-box">
+  <%= @url %>
+</div>
+
+<div class="body-text" style="margin-top: 30px;">
+  Thanks for being part of SF Ruby—can’t wait to have you at the event!<br>
+  <strong>SF Ruby Team</strong><br>
+  <a href="https://sfruby.com" class="body-text">sfruby.com</a>
+</div>

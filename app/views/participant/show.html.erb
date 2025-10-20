@@ -1,0 +1,45 @@
+<% content_for(:title) do %>
+  Generating Your Cloud Card
+<% end %>
+
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8 px-4">
+  <div class="max-w-4xl mx-auto flex flex-col gap-8 items-center">
+    <% if @clouds.any? %>
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Your Cloud Cards
+          </h2>
+          <p class="text-gray-600 mt-2">
+            <%= "card".pluralize(count: @clouds.size) %> generated
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <%= render collection: @clouds, partial: "cloud" %>
+        </div>
+
+        <div class="mt-6 text-center">
+          <%= link_to root_url, class: "inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow" do %>
+            View Gallery
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render "form" %>
+  </div>
+</div>
