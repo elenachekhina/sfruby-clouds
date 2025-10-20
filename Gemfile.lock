@@ -150,6 +150,7 @@ GEM
     crass (1.0.6)
     css_parser (1.21.1)
       addressable
+    csv (3.3.5)
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
@@ -493,6 +494,7 @@ DEPENDENCIES
   bundlebun
   capybara
   capybara-email
+  csv
   cuprite
   debug
   factory_bot_rails

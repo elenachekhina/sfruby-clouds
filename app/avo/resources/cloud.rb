@@ -1,5 +1,5 @@
 class Avo::Resources::Cloud < Avo::BaseResource
-  self.includes = [:participant, :image_attachment, :generated_image_attachment]
+  self.includes = [:participant, {image_attachment: :blob, generated_image_attachment: :blob}]
 
   self.search = {
     query: -> {
@@ -10,6 +10,19 @@ class Avo::Resources::Cloud < Avo::BaseResource
       ).result(distinct: false)
     }
   }
+
+  class BulkDelete < Avo::BaseAction
+    self.name = "Delete Cards"
+    self.no_confirmation = false
+
+    def handle(query:, fields:, current_user:, resource:, **args)
+      clouds = Array(resource.record || query.to_a)
+
+      clouds.each(&:destroy!)
+
+      succeed "Done!"
+    end
+  end
 
   def fields
     field :id, as: :id, link_to_record: true
@@ -26,5 +39,9 @@ class Avo::Resources::Cloud < Avo::BaseResource
 
     field :created_at, as: :date_time, readonly: true, sortable: true
     field :updated_at, as: :date_time, readonly: true, sortable: true
+  end
+
+  def actions
+    action BulkDelete
   end
 end

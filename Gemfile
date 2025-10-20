@@ -40,6 +40,7 @@ gem "avo", ">= 3.2"
 
 gem "friendly_id", "~> 5.5.0"
 gem "nanoid"
+gem "csv"
 
 # Freeze string literals automatically
 gem "freezolite"

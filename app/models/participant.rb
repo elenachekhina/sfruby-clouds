@@ -13,6 +13,9 @@ class Participant < ApplicationRecord
   validates :full_name, :email, presence: true
   validates :email, uniqueness: true
 
+  scope :without_picked_cloud, -> { where.missing(:picked_cloud) }
+  scope :without_invitations, -> { where.missing(:invitations) }
+
   before_create do
     self.access_token ||= Nanoid.generate(size: 6)
   end

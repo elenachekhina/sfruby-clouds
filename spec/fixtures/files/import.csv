@@ -1,0 +1,11 @@
+first_name,last_name,email,approval_status,ticket_name
+John,Smith,john.smith@email.com,approved,regular
+John,Smith, ,approved,regular
+Sarah,Johnson,sarah.j@gmail.com,pending,corporate
+Michael,Brown,m.brown@company.com,rejected,regular
+Emma,Davis,emma.davis@outlook.com,approved,regular
+Robert,Wilson,rob.wilson@email.net,approved,corporate
+ , ,rob.wilson@email.net,approved,corporate
+Lisa,Garcia,lisa.garcia@yahoo.com,pending,regular
+David,Martinez,D.MartineZ@webmail.com,approved,regular
+Jennifer,Anderson,jen.anderson@email.com,rejected,regular
