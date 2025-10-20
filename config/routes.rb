@@ -21,10 +21,11 @@ Rails.application.routes.draw do
     resource :image, only: [:show]
   end
 
-  scope "/c/:access_token" do
-    resource :participant
+  scope "/c/:access_token", as: :participant, module: :participant do
+    resource :home, only: [:show]
+    resources :clouds
 
-    get "/", to: "participant#show", as: :participant_cloud
+    get "/", to: "homes#show"
   end
 
   # Defines the root path route ("/")
