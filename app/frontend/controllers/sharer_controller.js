@@ -2,12 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static values = {
-    imageUrl: String,
+    url: String,
     userName: String
   }
 
   share(event) {
-    const shareUrl = this.imageUrlValue;
+    const shareUrl = this.urlValue;
     const shareText = `Join ${this.userNameValue} in the clouds at @sfrubyconf 🌥️✨`;
 
     if (navigator.share) {

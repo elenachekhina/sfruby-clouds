@@ -52,7 +52,7 @@ class: "group relative overflow-hidden rounded-xl bg-white border border-gray-20
         aria-label="Share"
         title="Share to social media"
         data-controller="sharer"
-        data-sharer-image-url-value="<%= cloud_image_url(cloud_id: cloud.participant.slug) %>"
+        data-sharer-url-value="<%= cloud_path(id: cloud.participant.slug) %>"
         data-sharer-user-name-value="<%= cloud.participant.full_name %>"
         data-action="sharer#share:prevent"
       >

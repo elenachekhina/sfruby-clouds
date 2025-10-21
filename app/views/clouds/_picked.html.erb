@@ -65,7 +65,7 @@
             <button
               class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:from-red-500 hover:to-pink-500 cursor-pointer"
               data-controller="sharer"
-              data-sharer-image-url-value="<%= cloud_image_url(cloud_id: cloud.participant.slug) %>"
+              data-sharer-url-value="<%= cloud_path(id: cloud.participant.slug) %>"
               data-sharer-user-name-value="<%= cloud.participant.full_name %>"
               data-action="sharer#share:prevent"
             >

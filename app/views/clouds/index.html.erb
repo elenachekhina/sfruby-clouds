@@ -75,4 +75,14 @@
   </footer>
 </div>
 
-<%= render "picked" if @picked_cloud %>
+<% if @picked_cloud %>
+  <% content_for(:head) do %>
+    <meta name="og:title" content="Join <%= @picked_cloud.participant.full_name %> at the SF Ruby Conference on Nov 19-20" />
+    <meta name="og:url" content="<%= request.url %>" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="og:image" content="<%= rails_blob_url(@picked_cloud.generated_image) %>" />
+  <% end %>
+
+  <%= render "picked" %>
+<% end %>
