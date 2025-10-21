@@ -27,8 +27,26 @@ module Webhooks
 
     private
 
+    # See https://mailchimp.com/developer/transactional/guides/track-respond-activity-webhooks/#authenticating-webhook-requests
     def verify_mandrill_signature
-      # TODO?
+      webhook_key = MandrillConfig.webhook_key
+      return unless webhook_key
+
+      provided_signature = request.headers["X-Mandrill-Signature"]
+      return head :unauthorized unless provided_signature
+
+      signature_parts = [request.url]
+      JSON.parse(request.raw_post).sort_by(&:first).each do |key, value|
+        signature_parts << key.to_s
+        signature_parts << value
+      end
+
+      expected_signature = Base64.encode64(OpenSSL::HMAC.digest("sha1", webhook_key, signature_parts.join))
+
+      unless provided_signature == expected_signature
+        Rails.error.report(StandardError.new("Invalid Mandrill signature"), context: {provided_signature:, expected_signature:, signature_parts:})
+        head :unauthorized
+      end
     end
   end
 end

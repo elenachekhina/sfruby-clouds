@@ -53,12 +53,36 @@ describe "/webhooks/mandrill" do
       ]
     end
 
-    subject { post webhooks_mandrill_url, params: {mandrill_events: events.to_json}, as: :json }
+    let(:signature) do
+      Base64.encode64(
+        OpenSSL::HMAC.digest(
+          "sha1",
+          "test-2025-key",
+          "#{webhooks_mandrill_url}mandrill_events#{events.to_json}"
+        )
+      )
+    end
+
+    subject { post webhooks_mandrill_url, params: {mandrill_events: events.to_json}, as: :json, headers: {"X-Mandrill-Signature" => signature} }
+
+    it "succeeds" do
+      subject
+      expect(response).to be_successful, "Unexpected response code: #{response.code}"
+    end
 
     it "updates invitations statuses" do
       expect { subject }.to change { invitation.reload.status }.from("sent").to("opened")
         .and change { another_invitation.reload.status }.from("sent").to("bounced")
         .and change { another_participant.reload.email_notifications_enabled }.from(true).to(false)
+    end
+
+    context "with incorrect signature" do
+      let(:signature) { "bla-bla" }
+
+      it "is unauthorized" do
+        subject
+        expect(response).to be_unauthorized, "Unexpected response code: #{response.code}"
+      end
     end
   end
 end
