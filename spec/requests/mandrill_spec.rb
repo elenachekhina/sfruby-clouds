@@ -60,10 +60,10 @@ describe "/webhooks/mandrill" do
           "test-2025-key",
           "#{webhooks_mandrill_url}mandrill_events#{events.to_json}"
         )
-      )
+      ).strip
     end
 
-    subject { post webhooks_mandrill_url, params: {mandrill_events: events.to_json}, as: :json, headers: {"X-Mandrill-Signature" => signature} }
+    subject { post webhooks_mandrill_url, params: "mandrill_events=#{URI.encode_www_form_component(events.to_json)}", headers: {"X-Mandrill-Signature" => signature, "Content-Type" => "application/x-www-form-urlencoded"} }
 
     it "succeeds" do
       subject

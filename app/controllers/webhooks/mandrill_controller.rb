@@ -36,12 +36,12 @@ module Webhooks
       return head :unauthorized unless provided_signature
 
       signature_parts = [request.url]
-      JSON.parse(request.raw_post).sort_by(&:first).each do |key, value|
+      request.request_parameters.sort_by(&:first).each do |key, value|
         signature_parts << key.to_s
         signature_parts << value
       end
 
-      expected_signature = Base64.encode64(OpenSSL::HMAC.digest("sha1", webhook_key, signature_parts.join))
+      expected_signature = Base64.encode64(OpenSSL::HMAC.digest("sha1", webhook_key, signature_parts.join)).strip
 
       unless provided_signature == expected_signature
         Rails.error.report(StandardError.new("Invalid Mandrill signature"), context: {provided_signature:, expected_signature:, signature_parts:})
