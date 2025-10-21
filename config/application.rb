@@ -48,6 +48,7 @@ module SFRubyClouds
 
     config.solid_queue.connects_to = {database: {writing: :queue, reading: :queue}}
     config.active_storage.service = :local
+    config.active_storage.resolve_model_to_route = :rails_storage_proxy
 
     # General application configuration
     config.app = AppConfig

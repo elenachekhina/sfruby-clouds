@@ -1,0 +1,8 @@
+local:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>/pr
+
+public_local:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>/pu
+  public: true

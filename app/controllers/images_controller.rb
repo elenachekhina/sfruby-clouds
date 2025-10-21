@@ -5,6 +5,8 @@ class ImagesController < ApplicationController
     participant = Participant.friendly.find(params[:cloud_id])
     cloud = participant.clouds.find_by!(picked: true)
 
-    send_blob_stream(cloud.generated_image.blob)
+    if stale?(cloud)
+      send_blob_stream(cloud.generated_image.blob)
+    end
   end
 end

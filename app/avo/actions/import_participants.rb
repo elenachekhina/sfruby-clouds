@@ -50,7 +50,7 @@ class Avo::Actions::ImportParticipants < Avo::BaseAction
 
     succeed "Successfully imported attendees!\n" \
             "Newly created: #{created_count}\n" \
-            "Already existed: #{participants_to_invite.size - (created_count)}\n" \
+            "Already existed: #{participants_to_invite.size - created_count}\n" \
             "Skipped (not approved): #{skipped[:not_approved]}\n" \
             "Skipped (no email): #{skipped[:no_email]}\n" \
             "Skipped (no name): #{skipped[:no_name]}"
