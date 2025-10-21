@@ -1,7 +1,7 @@
 class Participant < ApplicationRecord
   extend FriendlyId
 
-  friendly_id :full_name, use: :slugged
+  friendly_id :full_name, use: [:slugged, :finders]
 
   has_many :invitations, dependent: :destroy
   has_many :clouds, dependent: :destroy

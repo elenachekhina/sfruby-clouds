@@ -11,7 +11,7 @@ class Avo::Actions::ImportParticipants < Avo::BaseAction
   def handle(query:, fields:, current_user:, resource:, **args)
     csv_file = fields[:csv_file]
 
-    csv_content = csv_file.read
+    csv_content = csv_file.read.force_encoding("UTF-8")
 
     participants_to_invite = []
 
@@ -38,18 +38,19 @@ class Avo::Actions::ImportParticipants < Avo::BaseAction
       participants_to_invite << {
         email:,
         full_name:,
-        ticket_type:,
-        access_token: Nanoid.generate(size: 6)
+        ticket_type:
       }
     end
 
-    was_count = Participant.count
-    Participant.upsert_all(participants_to_invite, unique_by: [:email])
-    now_count = Participant.count
+    created_count = 0
+    participants_to_invite.each do |attrs|
+      participant = Participant.create_with(attrs).find_or_create_by(email: attrs[:email])
+      created_count += 1 if participant.persisted?
+    end
 
     succeed "Successfully imported attendees!\n" \
-            "Newly created: #{now_count - was_count}\n" \
-            "Already existed: #{participants_to_invite.size - (now_count - was_count)}\n" \
+            "Newly created: #{created_count}\n" \
+            "Already existed: #{participants_to_invite.size - (created_count)}\n" \
             "Skipped (not approved): #{skipped[:not_approved]}\n" \
             "Skipped (no email): #{skipped[:no_email]}\n" \
             "Skipped (no name): #{skipped[:no_name]}"

@@ -52,6 +52,19 @@ class Avo::Resources::Participant < Avo::BaseResource
     end
   end
 
+  class BulkDelete < Avo::BaseAction
+    self.name = "Delete Participants"
+    self.no_confirmation = false
+
+    def handle(query:, fields:, current_user:, resource:, **args)
+      clouds = Array(resource.record || query.to_a)
+
+      clouds.each(&:destroy!)
+
+      succeed "Done!"
+    end
+  end
+
   def fields
     field :id, as: :id, link_to_record: true
 
@@ -81,6 +94,7 @@ class Avo::Resources::Participant < Avo::BaseResource
 
   def actions
     action SendInvitation
+    action BulkDelete
     action Avo::Actions::ImportParticipants
   end
 end
