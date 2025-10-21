@@ -38,7 +38,8 @@ class Avo::Actions::ImportParticipants < Avo::BaseAction
       participants_to_invite << {
         email:,
         full_name:,
-        ticket_type:
+        ticket_type:,
+        access_token: Nanoid.generate(size: 6)
       }
     end
 
