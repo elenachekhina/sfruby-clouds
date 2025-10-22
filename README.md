@@ -6,6 +6,7 @@ AI-powered cloud character invitations for San Francisco Ruby Conference attende
 
 - Ruby 3.4+
 - **Google Gemini API key**: Get one at https://ai.google.dev/
+  - Put it into credentials as `gemini.api_key` or provide via the `GEMINI_API_KEY` env var.
 
 ## Running locally
 
