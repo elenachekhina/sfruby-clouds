@@ -14,7 +14,7 @@ class Avo::Resources::Invitation < Avo::BaseResource
   def fields
     field :id, as: :id, link_to_record: true
 
-    field :participant, as: :belongs_to, searchable: true, sortable: true
+    field :participant, as: :belongs_to, searchable: true
 
     field :status, as: :select, enum: ::Invitation.statuses, sortable: true, readonly: true
 

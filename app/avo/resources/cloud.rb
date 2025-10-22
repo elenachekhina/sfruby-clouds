@@ -27,7 +27,7 @@ class Avo::Resources::Cloud < Avo::BaseResource
   def fields
     field :id, as: :id, link_to_record: true
 
-    field :participant, as: :belongs_to, searchable: true, sortable: true
+    field :participant, as: :belongs_to, searchable: true
 
     field :picked, as: :boolean, sortable: true
 
