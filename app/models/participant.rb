@@ -15,6 +15,7 @@ class Participant < ApplicationRecord
 
   scope :without_picked_cloud, -> { where.missing(:picked_cloud) }
   scope :without_invitations, -> { where.missing(:invitations) }
+  scope :search, ->(q) { where(arel_table[:full_name].matches("%#{q}%").or(arel_table[:email].matches("%#{q}%"))) }
 
   before_create do
     self.access_token ||= Nanoid.generate(size: 6)

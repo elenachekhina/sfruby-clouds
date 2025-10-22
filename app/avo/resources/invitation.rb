@@ -3,12 +3,14 @@ class Avo::Resources::Invitation < Avo::BaseResource
 
   self.search = {
     query: -> {
-      query.ransack(
-        participant_full_name_cont: params[:q],
-        participant_email_cont: params[:q],
-        m: "or"
-      ).result(distinct: false)
-    }
+      query.joins(:participant)
+        .merge(Participant.search(params[:q]))
+    },
+    item: -> do
+      {
+        title: "#{record.id} (#{record.participant.full_name} — #{record.participant.email})"
+      }
+    end
   }
 
   def fields

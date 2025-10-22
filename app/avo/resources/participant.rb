@@ -4,11 +4,7 @@ class Avo::Resources::Participant < Avo::BaseResource
 
   self.search = {
     query: -> {
-      query.ransack(
-        full_name_cont: params[:q],
-        email_cont: params[:q],
-        m: "or"
-      ).result(distinct: false)
+      query.merge(Participant.search(params[:q]))
     }
   }
 
