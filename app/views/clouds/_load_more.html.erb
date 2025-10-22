@@ -1,0 +1,5 @@
+<%# locals: (cursor:) %>
+<% if cursor %>
+  <%= turbo_frame_tag "more_clouds_#{cursor}", src: clouds_path(cursor:), loading: :lazy, class: "[&[complete]]:contents" do %>
+  <% end %>
+<% end %>

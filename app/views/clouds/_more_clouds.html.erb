@@ -1,0 +1,5 @@
+<%# locals: (cursor: params[:cursor], next_cursor: @next_cursor) %>
+<%= turbo_frame_tag "more_clouds_#{cursor}" do %>
+  <%= render collection: @clouds, partial: "cloud" %>
+  <%= render "load_more", cursor: next_cursor %>
+<% end %>
