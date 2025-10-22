@@ -1,4 +1,13 @@
 <% # locals: (cloud: @picked_cloud) %>
+
+<% content_for(:head) do %>
+  <meta name="og:title" content="Join <%= cloud.participant.full_name %> at the SF Ruby Conference on Nov 19-20" >
+  <meta name="og:url" content="<%= request.url %>" >
+  <meta name="og:type" content="website" >
+  <meta name="twitter:card" content="summary_large_image" >
+  <meta name="og:image" content="<%= rails_blob_url(cloud.generated_image) %>" >
+<% end %>
+
 <div
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 overflow-y-auto"
   data-controller="navigator"
