@@ -52,7 +52,7 @@ const morphRender = (prevEl, newEl, opts = {}) => {
 document.addEventListener("turbo:before-render", (event) => {
   if (Turbo.navigator.currentVisit) {
     Turbo.navigator.currentVisit.scrolled =
-      prevPath === window.location.pathname;
+      prevPath === window.location.pathname || (!!document.head.querySelector('meta[name="turbo-refresh-scroll"][content="preserve"]'));
   }
   prevPath = window.location.pathname;
 

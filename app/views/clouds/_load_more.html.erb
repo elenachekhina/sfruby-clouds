@@ -1,5 +1,9 @@
 <%# locals: (cursor:) %>
 <% if cursor %>
-  <%= turbo_frame_tag "more_clouds_#{cursor}", src: clouds_path(cursor:), loading: :lazy, class: "[&[complete]]:contents" do %>
+  <%= turbo_frame_tag "more_clouds_#{cursor}", src: clouds_path(cursor:), loading: :lazy, class: "[&[complete]]:contents", target: "_top" do %>
+    <div class="flex items-center justify-center p-8">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      <span class="ml-3 text-gray-600">Loading more clouds...</span>
+    </div>
   <% end %>
 <% end %>
