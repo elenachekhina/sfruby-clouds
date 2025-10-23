@@ -1,82 +1,35 @@
 class Cloud
   class CardGenerator
-    FLASH_IMAGE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent"
-
     private attr_reader :cloud, :api_key
 
     delegate :participant, to: :cloud
 
-    def initialize(cloud, api_key: GeminiConfig.api_key)
+    def initialize(cloud)
       @cloud = cloud
-      @api_key = api_key
     end
 
     def generate
-      raise ArgumentError, "Gemini API key not configured" if api_key.blank?
       raise ArgumentError, "No photo attached" unless cloud.image.attached?
 
-      parts = [
-        {
-          text: build_prompt
-        },
-        build_inline_data(cloud.image.blob.download, cloud.image.content_type),
-        build_inline_data(Rails.public_path.join("sfruby_character.png").read, "image/png"),
-        build_inline_data(Rails.public_path.join("sfruby_character_h.png").read, "image/png"),
-        build_inline_data(Rails.public_path.join("sfruby_character_blue.png").read, "image/png")
-      ]
+      chat = RubyLLM.chat(model: "gemini-2.5-flash-image")
+        .with_temperature(1.0)
+        .with_params(generationConfig: {responseModalities: ["image"]})
 
-      request = {
-        contents: [
-          {
-            parts:
-          }
-        ],
-        generationConfig: {
-          responseModalities: ["image"],
-          temperature: 1.0
-        }
-      }
+      response = chat.ask build_prompt, with: build_attachments
+      raise "LLM error: #{response.raw.body.dig("candidates", 0, "finishMessage") || "no data"}" if response.content.blank?
 
-      response = HTTParty.post(
-        "#{FLASH_IMAGE_URL}?key=#{api_key}",
-        body: request.to_json,
-        headers: {"Content-Type" => "application/json"},
-        timeout: 90
-      )
-
-      if response.success?
-        process_response(response.parsed_response)
-      else
-        raise "Gemini API error: #{response.code} - #{response.body}"
-      end
+      response.content[:attachments].first.source
     end
 
     private
 
-    def build_inline_data(io, content_type)
-      {
-        inlineData: {
-          mimeType: content_type,
-          data: Base64.strict_encode64(io)
-        }
-      }
-    end
-
-    def process_response(response)
-      parts = response.dig("candidates", 0, "content", "parts")
-
-      if parts.nil?
-        raise "No parts found in response"
-      end
-
-      image_part = parts.find { it.dig("inlineData", "mimeType")&.start_with?("image/") }
-
-      raise "No image data found in parts. Parts structure: #{parts.map(&:keys)}" unless image_part
-
-      image_data = image_part["inlineData"]["data"]
-      decoded_image = Base64.decode64(image_data)
-
-      StringIO.new(decoded_image)
+    def build_attachments
+      [
+        cloud.image.blob,
+        Rails.public_path.join("sfruby_character.png"),
+        Rails.public_path.join("sfruby_character_h.png"),
+        Rails.public_path.join("sfruby_character_blue.png")
+      ]
     end
 
     def build_prompt

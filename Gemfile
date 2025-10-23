@@ -40,6 +40,7 @@ gem "nanoid"
 
 # Integrations
 gem "httparty"
+gem "ruby_llm", "~> 1.9.0"
 
 # Admin panel [https://docs.avohq.io/]
 gem "avo", ">= 3.2"
