@@ -7,7 +7,7 @@ class Avo::Resources::Message < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :recipient, as: :belongs_to, searchable: true, readonly: true
+    field :participant, as: :belongs_to, searchable: true, readonly: true
     field :message_campaign, as: :belongs_to, searchable: true, readonly: true
     field :status, as: :select, enum: ::Message.statuses, sortable: true, readonly: true
   end

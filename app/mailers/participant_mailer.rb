@@ -10,4 +10,13 @@ class ParticipantMailer < ApplicationMailer
       subject: "Create Your SF Ruby Cloud Card ☁️"
     )
   end
+
+  def campaign
+    @campaign = params[:campaign]
+
+    mail(
+      to: @participant.email,
+      subject: @campaign.subject
+    )
+  end
 end

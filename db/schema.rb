@@ -77,11 +77,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
     t.datetime "created_at", null: false
     t.integer "message_campaign_id", null: false
     t.datetime "opened_at"
-    t.integer "recipient_id", null: false
+    t.integer "participant_id", null: false
     t.string "status", default: "sent", null: false
     t.datetime "updated_at", null: false
     t.index ["message_campaign_id"], name: "index_messages_on_message_campaign_id"
-    t.index ["recipient_id"], name: "index_messages_on_recipient_id"
+    t.index ["participant_id"], name: "index_messages_on_participant_id"
   end
 
   create_table "participants", force: :cascade do |t|
@@ -106,5 +106,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "messages", "message_campaigns"
-  add_foreign_key "messages", "participants", column: "recipient_id"
+  add_foreign_key "messages", "participants"
 end

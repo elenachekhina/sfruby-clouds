@@ -68,7 +68,7 @@ class Avo::Resources::Participant < Avo::BaseResource
 
         total_sent += 1
 
-        message_campaign.messages.create!(recipient: participant)
+        message_campaign.messages.create!(participant:)
       end
 
       succeed "Done! #{total_sent} messages sent"
