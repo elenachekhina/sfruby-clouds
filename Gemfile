@@ -53,6 +53,8 @@ gem "freezolite"
 
 gem "bootsnap", require: false
 
+gem "kramdown", "~> 2.5"
+
 group :production do
   gem "sentry-ruby", "~> 5.15"
   gem "sentry-rails", "~> 5.15"
@@ -83,5 +85,3 @@ group :test do
   gem "capybara-email"
   gem "cuprite"
 end
-
-gem "kramdown", "~> 2.5"
