@@ -7,6 +7,19 @@ class Message < ApplicationRecord
   delegate :subject, :body, to: :message_campaign
 
   after_create_commit do
-    ParticipantMailer.with(campaign: self.message_campaign, participant: self.participant).campaign.deliver_later
+    ParticipantMailer.with(campaign: message_campaign, participant:, trackable: self).campaign.deliver_later
+  end
+
+  after_update_commit :update_campaign_stats, if: :saved_change_to_status?
+
+  private
+
+  def update_campaign_stats
+    case status
+    when "opened"
+      message_campaign.increment!(:opened_messages_count)
+    when "bounced"
+      message_campaign.increment!(:bounced_messages_count)
+    end
   end
 end

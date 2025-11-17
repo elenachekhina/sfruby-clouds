@@ -7,6 +7,10 @@ describe "/webhooks/mandrill" do
   let_it_be(:another_participant) { create(:participant, full_name: "John", email: "john@sf.test") }
   let_it_be(:another_invitation) { another_participant.invitations.create! }
 
+  let_it_be(:message_campaign) { create(:message_campaign) }
+  let_it_be(:message) { create(:message, participant:, message_campaign:) }
+  let_it_be(:another_message) { create(:message, participant:, message_campaign:) }
+
   describe "POST /create" do
     let(:events) do
       [
@@ -27,7 +31,8 @@ describe "/webhooks/mandrill" do
             "_id" => "abc123def456ghi789",
             "state" => "sent",
             "metadata" => {
-              "invitation_id" => invitation.id
+              "trackable_type" => "Invitation",
+              "trackable_id" => invitation.id
             }
           }
         },
@@ -46,7 +51,50 @@ describe "/webhooks/mandrill" do
             "_id" => "def456ghi789jkl012",
             "state" => "bounced",
             "metadata" => {
-              "invitation_id" => another_invitation.id
+              "trackable_type" => "Invitation",
+              "trackable_id" => another_invitation.id
+            }
+          }
+        },
+        {
+          "event" => "open",
+          "ts" => 1365109999,
+          "msg" => {
+            "ts" => 1365109999,
+            "subject" => "Test Subject",
+            "email" => "vova@sf.test",
+            "sender" => "noreply@example.com",
+            "tags" => ["campaign"],
+            "opens" => [
+              {
+                "ts" => 1365109999
+              }
+            ],
+            "_id" => "abc123def456ghi789",
+            "state" => "sent",
+            "metadata" => {
+              "trackable_type" => "Message",
+              "trackable_id" => message.id
+            }
+          }
+        },
+        {
+          "event" => "hard_bounce",
+          "ts" => 1365110000,
+          "msg" => {
+            "ts" => 1365110000,
+            "subject" => "Test Subject",
+            "email" => "john@sf.test",
+            "sender" => "noreply@example.com",
+            "tags" => ["campaign"],
+            "bounce_description" => "bad_mailbox",
+            "bgtools_code" => 10,
+            "diag" => "smtp;550 5.1.1 The email account that you tried to reach does not exist.",
+            "_id" => "def456ghi789jkl012",
+            "state" => "bounced",
+            "metadata" => {
+              "trackable_type" => "Message",
+              "trackable_id" => another_message.id
             }
           }
         }
@@ -74,6 +122,12 @@ describe "/webhooks/mandrill" do
       expect { subject }.to change { invitation.reload.status }.from("sent").to("opened")
         .and change { another_invitation.reload.status }.from("sent").to("bounced")
         .and change { another_participant.reload.email_notifications_enabled }.from(true).to(false)
+        .and change { message.reload.status }.from("sent").to("opened")
+    end
+
+    it "updates message opened_at" do
+      expect { subject }.to change { message.reload.status }.from("sent").to("opened")
+        .and change { another_message.reload.status }.from("sent").to("bounced")
     end
 
     context "with incorrect signature" do

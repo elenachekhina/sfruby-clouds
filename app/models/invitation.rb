@@ -4,6 +4,6 @@ class Invitation < ApplicationRecord
   enum :status, %w[sent opened bounced].index_by(&:itself)
 
   after_create_commit do
-    ParticipantMailer.with(participant:, invitation: self).welcome.deliver_later
+    ParticipantMailer.with(participant:, invitation: self, trackable: self).welcome.deliver_later
   end
 end

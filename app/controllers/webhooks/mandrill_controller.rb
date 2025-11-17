@@ -6,26 +6,35 @@ module Webhooks
     before_action :verify_mandrill_signature, only: [:create]
 
     def create
-      events = JSON.parse(params[:mandrill_events]).select do
+      events_by_type = JSON.parse(params[:mandrill_events]).select do
         (it["event"] == "open" || it["event"].in?(BOUNCED_EVENTS)) &&
-          it.dig("msg", "metadata", "invitation_id").present?
-      end.group_by { it.dig("msg", "metadata", "invitation_id") }
+          it.dig("msg", "metadata", "trackable_id").present? && it.dig("msg", "metadata", "trackable_type").present?
+      end.group_by { it.dig("msg", "metadata", "trackable_type") }
 
-      Invitation.preload(:participant).where(id: events.keys).find_each do |invitation|
-        events[invitation.id].each do |event|
-          if event["event"] == "open"
-            invitation.update!(status: :opened, opened_at: Time.zone.at(event["ts"]))
-          else # bounced
-            invitation.update!(status: :bounced, bounce_type: event["event"], bounced_at: Time.zone.at(event["ts"]))
-            invitation.participant.update!(email_notifications_enabled: false)
+      events_by_type.each do |trackable_type, events|
+        klass = trackable_type.classify.constantize rescue nil
+        next unless klass
+
+        events = events.group_by { |it| it.dig("msg", "metadata", "trackable_id") }
+
+        klass.preload(:participant).where(id: events.keys).find_each do |trackable|
+          events[trackable.id].each do |event|
+            process_event(trackable, event)
           end
         end
       end
-
-      head :ok
     end
 
     private
+
+    def process_event(trackable, event)
+      if event["event"] == "open"
+        trackable.update!(status: :opened, opened_at: Time.zone.at(event["ts"]))
+      else # bounced
+        trackable.update!(status: :bounced, bounce_type: event["event"], bounced_at: Time.zone.at(event["ts"]))
+        trackable.participant.update!(email_notifications_enabled: false)
+      end
+    end
 
     # See https://mailchimp.com/developer/transactional/guides/track-respond-activity-webhooks/#authenticating-webhook-requests
     def verify_mandrill_signature

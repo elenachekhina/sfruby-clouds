@@ -16,4 +16,18 @@ RSpec.describe Message, type: :model do
       end.to have_enqueued_mail(ParticipantMailer, :campaign)
     end
   end
+
+  describe ".update" do
+    let!(:message) { message_campaign.messages.create!(participant:) }
+
+    it "updates the message_campaign count for opened_messages_count" do
+      expect { message.update!(status: "opened") }
+        .to change { message_campaign.reload.opened_messages_count }.by(1)
+    end
+
+    it "updates the message_campaign count for bounced_messages_count" do
+      expect { message.update!(status: "bounced") }
+        .to change { message_campaign.reload.bounced_messages_count }.by(1)
+    end
+  end
 end
