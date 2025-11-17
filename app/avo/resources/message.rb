@@ -10,5 +10,9 @@ class Avo::Resources::Message < Avo::BaseResource
     field :participant, as: :belongs_to, searchable: true, readonly: true
     field :message_campaign, as: :belongs_to, searchable: true, readonly: true
     field :status, as: :select, enum: ::Message.statuses, sortable: true, readonly: true
+    field :bounce_type
+    field :created_at, as: :date_time, readonly: true, sortable: true
+    field :opened_at, as: :date_time, readonly: true, sortable: true
+    field :bounced_at, as: :date_time, readonly: true, sortable: true
   end
 end

@@ -10,8 +10,8 @@ class Avo::Resources::MessageCampaign < Avo::BaseResource
     field :name, as: :text
     field :subject, as: :text
     field :body, as: :easy_mde
-    field :sent_messages_count, as: :number
-    field :opened_messages_count, as: :number
-    field :bounced_messages_count, as: :number
+    field :sent_messages_count, as: :number, only_on: %i[show index], readonly: true
+    field :opened_messages_count, as: :custom_progress_bar, max: :sent_messages_count, display_value: true, only_on: %i[show index], readonly: true
+    field :bounced_messages_count, as: :custom_progress_bar, max: :sent_messages_count, display_value: true, only_on: %i[show index], readonly: true
   end
 end
