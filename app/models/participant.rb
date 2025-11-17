@@ -5,6 +5,7 @@ class Participant < ApplicationRecord
 
   has_many :invitations, dependent: :destroy
   has_many :clouds, dependent: :destroy
+  has_many :messages, inverse_of: :recipient, dependent: :destroy
 
   has_one :picked_cloud, -> { picked }, class_name: "Cloud"
 

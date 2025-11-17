@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_17_103334) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -64,10 +64,24 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_103334) do
     t.text "body", null: false
     t.integer "bounced_messages_count", default: 0, null: false
     t.datetime "created_at", null: false
+    t.string "name", null: false
     t.integer "opened_messages_count", default: 0, null: false
     t.integer "sent_messages_count", default: 0, null: false
     t.string "subject", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "bounce_type"
+    t.datetime "bounced_at"
+    t.datetime "created_at", null: false
+    t.integer "message_campaign_id", null: false
+    t.datetime "opened_at"
+    t.integer "recipient_id", null: false
+    t.string "status", default: "sent", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_campaign_id"], name: "index_messages_on_message_campaign_id"
+    t.index ["recipient_id"], name: "index_messages_on_recipient_id"
   end
 
   create_table "participants", force: :cascade do |t|
@@ -91,4 +105,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_103334) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "messages", "message_campaigns"
+  add_foreign_key "messages", "participants", column: "recipient_id"
 end

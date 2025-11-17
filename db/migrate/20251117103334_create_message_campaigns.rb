@@ -1,6 +1,7 @@
 class CreateMessageCampaigns < ActiveRecord::Migration[8.1]
   def change
     create_table :message_campaigns do |t|
+      t.string :name, null: false
       t.string :subject, null: false
       t.text :body, null: false
       t.integer :sent_messages_count, null: false, default: 0

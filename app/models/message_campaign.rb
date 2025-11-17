@@ -1,3 +1,5 @@
 class MessageCampaign < ApplicationRecord
-  validates :subject, :body, presence: true
+  has_many :messages, dependent: :destroy
+
+  validates :name, :subject, :body, presence: true
 end

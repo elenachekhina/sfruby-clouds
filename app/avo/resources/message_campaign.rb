@@ -7,6 +7,7 @@ class Avo::Resources::MessageCampaign < Avo::BaseResource
   
   def fields
     field :id, as: :id
+    field :name, as: :text
     field :subject, as: :text
     field :body, as: :easy_mde
     field :sent_messages_count, as: :number
