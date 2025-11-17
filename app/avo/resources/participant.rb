@@ -48,6 +48,33 @@ class Avo::Resources::Participant < Avo::BaseResource
     end
   end
 
+  class SendCampaign < Avo::BaseAction
+    self.name = "Send Campaign"
+    self.no_confirmation = false
+
+    def fields
+      field :message_campaign, as: :select, options: MessageCampaign.all.pluck(:name, :id).to_h,
+            required: true
+    end
+
+    def handle(query:, fields:, current_user:, resource:, **args)
+      message_campaign = MessageCampaign.find(fields[:message_campaign])
+      participants = Array(resource.record || query.all.to_a)
+
+      total_sent = 0
+
+      participants.each do |participant|
+        next if !participant.email_notifications_enabled?
+
+        total_sent += 1
+
+        message_campaign.messages.create!(recipient: participant)
+      end
+
+      succeed "Done! #{total_sent} messages sent"
+    end
+  end
+
   class BulkDelete < Avo::BaseAction
     self.name = "Delete Participants"
     self.no_confirmation = false
@@ -90,6 +117,7 @@ class Avo::Resources::Participant < Avo::BaseResource
 
   def actions
     action SendInvitation
+    action SendCampaign
     action BulkDelete
     action Avo::Actions::ImportParticipants
   end

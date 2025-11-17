@@ -5,4 +5,8 @@ class Message < ApplicationRecord
   enum :status, %w[sent opened bounced].index_by(&:itself)
 
   delegate :subject, :body, to: :message_campaign
+
+  after_create_commit do
+    CampaignMailer.with(message: self).mailing.deliver_later
+  end
 end
