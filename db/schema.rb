@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_20_130437) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_17_103334) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -58,6 +58,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_20_130437) do
     t.string "status", default: "sent", null: false
     t.datetime "updated_at", null: false
     t.index ["participant_id"], name: "index_invitations_on_participant_id"
+  end
+
+  create_table "message_campaigns", force: :cascade do |t|
+    t.text "body", null: false
+    t.integer "bounced_messages_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.integer "opened_messages_count", default: 0, null: false
+    t.integer "sent_messages_count", default: 0, null: false
+    t.string "subject", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "participants", force: :cascade do |t|
