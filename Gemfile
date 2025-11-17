@@ -83,3 +83,5 @@ group :test do
   gem "capybara-email"
   gem "cuprite"
 end
+
+gem "kramdown", "~> 2.5"
