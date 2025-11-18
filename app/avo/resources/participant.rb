@@ -53,7 +53,7 @@ class Avo::Resources::Participant < Avo::BaseResource
     self.no_confirmation = false
 
     def fields
-      field :message_campaign, as: :select, options: MessageCampaign.all.pluck(:name, :id).to_h,
+      field :message_campaign, as: :select, options: MessageCampaign.pluck(:name, :id).to_h,
             required: true
     end
 

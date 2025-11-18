@@ -23,6 +23,8 @@ module Webhooks
           end
         end
       end
+
+      head :ok
     end
 
     private
