@@ -15,9 +15,6 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   before_action do
-    headers["X-MC-Track"] = "opens, clicks_htmlonly"
-    headers["X-MC-Metadata"] = { trackable_type: @trackable&.class, trackable_id: @trackable&.id }.compact.to_json
-
     attachments.inline["sfruby_email.png"] = Rails.public_path.join("sfruby_email.png").read
   end
 

@@ -122,7 +122,6 @@ describe "/webhooks/mandrill" do
       expect { subject }.to change { invitation.reload.status }.from("sent").to("opened")
         .and change { another_invitation.reload.status }.from("sent").to("bounced")
         .and change { another_participant.reload.email_notifications_enabled }.from(true).to(false)
-        .and change { message.reload.status }.from("sent").to("opened")
     end
 
     it "updates message opened_at" do
