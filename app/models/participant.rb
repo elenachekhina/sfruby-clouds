@@ -7,6 +7,7 @@ class Participant < ApplicationRecord
   has_many :invitations, through: :deliveries, source: :deliverable, source_type: "Invitation"
   has_many :clouds, dependent: :destroy
   has_many :messages, through: :deliveries, source: :deliverable, source_type: "Message"
+  has_many :message_campaigns, through: :messages
 
   has_one :picked_cloud, -> { picked }, class_name: "Cloud"
 

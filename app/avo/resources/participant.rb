@@ -61,13 +61,13 @@ class Avo::Resources::Participant < Avo::BaseResource
     def handle(query:, fields:, current_user:, resource:, **args)
       message_campaign = MessageCampaign.find(fields[:message_campaign])
       resend = fields[:resend]
-      participants = Array(resource.record || query.all.to_a)
+      participants = Array(resource.record || query.preload(:message_campaigns).all.to_a)
 
       total_sent = 0
 
       participants.each do |participant|
         next if !participant.email_notifications_enabled? ||
-                (!resend && participant.messages.where(message_campaign_id: message_campaign.id).exists?)
+                (!resend && participant.message_campaigns.include?(message_campaign))
 
         total_sent += 1
 
