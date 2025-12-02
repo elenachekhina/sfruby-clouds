@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_02_135559) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_02_163517) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -49,6 +49,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_135559) do
     t.index ["participant_id"], name: "index_clouds_on_participant_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "deliveries", force: :cascade do |t|
     t.string "bounce_type"
     t.datetime "bounced_at"
@@ -64,14 +67,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_135559) do
   end
 
   create_table "invitations", force: :cascade do |t|
-    t.string "bounce_type"
-    t.datetime "bounced_at"
     t.datetime "created_at", null: false
-    t.datetime "opened_at"
-    t.integer "participant_id"
-    t.string "status", default: "sent", null: false
     t.datetime "updated_at", null: false
-    t.index ["participant_id"], name: "index_invitations_on_participant_id"
   end
 
   create_table "message_campaigns", force: :cascade do |t|

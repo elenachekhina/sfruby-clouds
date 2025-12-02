@@ -8,6 +8,7 @@ class Avo::Resources::Message < Avo::BaseResource
   def fields
     field :id, as: :id
     field :participant, as: :belongs_to, searchable: true, readonly: true
+    field :delivery, as: :has_one
     field :message_campaign, as: :belongs_to, searchable: true, readonly: true
     field :status, as: :select, enum: ::Delivery.statuses, sortable: true, readonly: true
     field :bounce_type

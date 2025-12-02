@@ -7,5 +7,12 @@ class Avo::Resources::Delivery < Avo::BaseResource
   
   def fields
     field :id, as: :id
+    field :participant, as: :belongs_to, searchable: true
+    field :deliverable, as: :belongs_to, polymorphic_as: :deliverable, types: %w[Avo::Resources::Message Avo::Resources::Invitation]
+    field :status, as: :select, enum: ::Delivery.statuses, readonly: true, sortable: true
+    field :bounce_type
+    field :created_at, as: :date_time, readonly: true, sortable: true
+    field :opened_at, as: :date_time, readonly: true, sortable: true
+    field :bounced_at, as: :date_time, readonly: true, sortable: true
   end
 end

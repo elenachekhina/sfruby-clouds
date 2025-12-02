@@ -8,16 +8,16 @@ module Webhooks
     def create
       events = JSON.parse(params[:mandrill_events]).select do
         (it["event"] == "open" || it["event"].in?(BOUNCED_EVENTS)) &&
-          it.dig("msg", "metadata", "invitation_id").present?
-      end.group_by { it.dig("msg", "metadata", "invitation_id") }
+          it.dig("msg", "metadata", "delivery_id").present?
+      end.group_by { it.dig("msg", "metadata", "delivery_id") }
 
-      Invitation.preload(:participant).where(id: events.keys).find_each do |invitation|
-        events[invitation.id].each do |event|
+      Delivery.preload(:participant).where(id: events.keys).find_each do |delivery|
+        events[delivery.id].each do |event|
           if event["event"] == "open"
-            invitation.update!(status: :opened, opened_at: Time.zone.at(event["ts"]))
+            delivery.update!(status: :opened, opened_at: Time.zone.at(event["ts"]))
           else # bounced
-            invitation.update!(status: :bounced, bounce_type: event["event"], bounced_at: Time.zone.at(event["ts"]))
-            invitation.participant.update!(email_notifications_enabled: false)
+            delivery.update!(status: :bounced, bounce_type: event["event"], bounced_at: Time.zone.at(event["ts"]))
+            delivery.participant.update!(email_notifications_enabled: false)
           end
         end
       end

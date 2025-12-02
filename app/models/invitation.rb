@@ -1,9 +1,10 @@
 class Invitation < ApplicationRecord
-  belongs_to :participant, counter_cache: true
-
-  enum :status, %w[sent opened bounced].index_by(&:itself)
+  include Deliverable
 
   after_create_commit do
-    ParticipantMailer.with(participant:, invitation: self, trackable: self).welcome.deliver_later
+    ParticipantMailer.with(participant:, invitation: self, delivery:).welcome.deliver_later
   end
+
+  after_create_commit -> { participant.increment!(:invitations_count) }
+  after_destroy_commit -> { participant.decrement!(:invitations_count) }
 end

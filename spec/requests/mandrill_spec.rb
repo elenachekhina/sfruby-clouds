@@ -2,10 +2,10 @@ require "rails_helper"
 
 describe "/webhooks/mandrill" do
   let_it_be(:participant) { create(:participant, full_name: "Vova", email: "vova@sf.test") }
-  let_it_be(:invitation) { participant.invitations.create! }
+  let_it_be(:delivery) { participant.deliveries.create! deliverable: Invitation.new }
 
   let_it_be(:another_participant) { create(:participant, full_name: "John", email: "john@sf.test") }
-  let_it_be(:another_invitation) { another_participant.invitations.create! }
+  let_it_be(:another_delivery) { another_participant.deliveries.create! deliverable: Invitation.new }
 
   describe "POST /create" do
     let(:events) do
@@ -18,7 +18,7 @@ describe "/webhooks/mandrill" do
             "subject" => "Test Subject",
             "email" => "vova@sf.test",
             "sender" => "noreply@example.com",
-            "tags" => ["invitation"],
+            "tags" => ["delivery"],
             "opens" => [
               {
                 "ts" => 1365109999
@@ -27,7 +27,7 @@ describe "/webhooks/mandrill" do
             "_id" => "abc123def456ghi789",
             "state" => "sent",
             "metadata" => {
-              "invitation_id" => invitation.id
+              "delivery_id" => delivery.id
             }
           }
         },
@@ -39,14 +39,14 @@ describe "/webhooks/mandrill" do
             "subject" => "Test Subject",
             "email" => "john@sf.test",
             "sender" => "noreply@example.com",
-            "tags" => ["invitation"],
+            "tags" => ["delivery"],
             "bounce_description" => "bad_mailbox",
             "bgtools_code" => 10,
             "diag" => "smtp;550 5.1.1 The email account that you tried to reach does not exist.",
             "_id" => "def456ghi789jkl012",
             "state" => "bounced",
             "metadata" => {
-              "invitation_id" => another_invitation.id
+              "delivery_id" => another_delivery.id
             }
           }
         }
@@ -70,10 +70,10 @@ describe "/webhooks/mandrill" do
       expect(response).to be_successful, "Unexpected response code: #{response.code}"
     end
 
-    it "updates invitations statuses" do
-      expect { subject }.to change { invitation.reload.status }.from("sent").to("opened")
-                                                               .and change { another_invitation.reload.status }.from("sent").to("bounced")
-                                                                                                               .and change { another_participant.reload.email_notifications_enabled }.from(true).to(false)
+    it "updates deliveries statuses" do
+      expect { subject }.to change { delivery.reload.status }.from("sent").to("opened")
+        .and change { another_delivery.reload.status }.from("sent").to("bounced")
+        .and change { another_participant.reload.email_notifications_enabled }.from(true).to(false)
     end
 
     context "with incorrect signature" do

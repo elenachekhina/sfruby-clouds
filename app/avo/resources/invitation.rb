@@ -17,8 +17,9 @@ class Avo::Resources::Invitation < Avo::BaseResource
     field :id, as: :id, link_to_record: true
 
     field :participant, as: :belongs_to, searchable: true
+    field :delivery, as: :has_one
 
-    field :status, as: :select, enum: ::Invitation.statuses, sortable: true, readonly: true
+    field :status, as: :select, enum: ::Delivery.statuses, sortable: true, readonly: true
 
     field :bounce_type
 
