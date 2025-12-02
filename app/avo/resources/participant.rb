@@ -55,20 +55,23 @@ class Avo::Resources::Participant < Avo::BaseResource
     def fields
       field :message_campaign, as: :select, options: MessageCampaign.pluck(:name, :id).to_h,
             required: true
+      field :resend, as: :boolean, help: "Check this to resend message campaign even if already sent"
     end
 
     def handle(query:, fields:, current_user:, resource:, **args)
       message_campaign = MessageCampaign.find(fields[:message_campaign])
+      resend = fields[:resend]
       participants = Array(resource.record || query.all.to_a)
 
       total_sent = 0
 
       participants.each do |participant|
-        next if !participant.email_notifications_enabled?
+        next if !participant.email_notifications_enabled? ||
+                (!resend && participant.messages.where(message_campaign_id: message_campaign.id).exists?)
 
         total_sent += 1
 
-        message_campaign.messages.create!(participant:)
+        participant.messages.create!(message_campaign:)
       end
 
       succeed "Done! #{total_sent} messages sent"

@@ -11,7 +11,7 @@ class ApplicationMailer < ActionMailer::Base
     next unless params
 
     @participant = params[:participant]
-    @trackable = params[:trackable]
+    @delivery = params[:delivery]
   end
 
   before_action do

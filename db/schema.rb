@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_02_135559) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -49,6 +49,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
     t.index ["participant_id"], name: "index_clouds_on_participant_id"
   end
 
+  create_table "deliveries", force: :cascade do |t|
+    t.string "bounce_type"
+    t.datetime "bounced_at"
+    t.datetime "created_at", null: false
+    t.integer "deliverable_id", null: false
+    t.string "deliverable_type", null: false
+    t.datetime "opened_at"
+    t.integer "participant_id", null: false
+    t.string "status", default: "sent", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deliverable_type", "deliverable_id"], name: "index_deliveries_on_deliverable"
+    t.index ["participant_id"], name: "index_deliveries_on_participant_id"
+  end
+
   create_table "invitations", force: :cascade do |t|
     t.string "bounce_type"
     t.datetime "bounced_at"
@@ -72,16 +86,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string "bounce_type"
-    t.datetime "bounced_at"
     t.datetime "created_at", null: false
     t.integer "message_campaign_id", null: false
-    t.datetime "opened_at"
-    t.integer "participant_id", null: false
-    t.string "status", default: "sent", null: false
     t.datetime "updated_at", null: false
     t.index ["message_campaign_id"], name: "index_messages_on_message_campaign_id"
-    t.index ["participant_id"], name: "index_messages_on_participant_id"
   end
 
   create_table "participants", force: :cascade do |t|
@@ -105,6 +113,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_112451) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "deliveries", "participants"
   add_foreign_key "messages", "message_campaigns"
-  add_foreign_key "messages", "participants"
 end

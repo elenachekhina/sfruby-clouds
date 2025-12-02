@@ -3,9 +3,10 @@ class Participant < ApplicationRecord
 
   friendly_id :full_name, use: [:slugged, :finders]
 
+  has_many :deliveries, dependent: :destroy
   has_many :invitations, dependent: :destroy
   has_many :clouds, dependent: :destroy
-  has_many :messages, dependent: :destroy
+  has_many :messages, through: :deliveries, source: :deliverable, source_type: "Message"
 
   has_one :picked_cloud, -> { picked }, class_name: "Cloud"
 

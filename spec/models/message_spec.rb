@@ -17,16 +17,16 @@ RSpec.describe Message, type: :model do
     end
   end
 
-  describe ".update" do
-    let!(:message) { message_campaign.messages.create!(participant:) }
+  describe "delivery status update" do
+    let_it_be(:message) { message_campaign.messages.create!(participant:) }
 
     it "updates the message_campaign count for opened_messages_count" do
-      expect { message.update!(status: "opened") }
+      expect { message.delivery.update!(status: "opened") }
         .to change { message_campaign.reload.opened_messages_count }.by(1)
     end
 
     it "updates the message_campaign count for bounced_messages_count" do
-      expect { message.update!(status: "bounced") }
+      expect { message.delivery.update!(status: "bounced") }
         .to change { message_campaign.reload.bounced_messages_count }.by(1)
     end
   end

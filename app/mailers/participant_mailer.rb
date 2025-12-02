@@ -1,9 +1,7 @@
 class ParticipantMailer < ApplicationMailer
   before_action do
-    return unless @trackable
-
     headers["X-MC-Track"] = "opens, clicks_htmlonly"
-    headers["X-MC-Metadata"] = { trackable_type: @trackable&.class, trackable_id: @trackable&.id }.compact.to_json
+    headers["X-MC-Metadata"] = { delivery_id: @delivery&.id }.compact.to_json
   end
 
   def welcome
