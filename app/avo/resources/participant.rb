@@ -33,16 +33,7 @@ class Avo::Resources::Participant < Avo::BaseResource
       resend = fields[:resend]
       participants = Array(resource.record || query.all.to_a)
 
-      total_sent = 0
-
-      participants.each do |participant|
-        next if !participant.email_notifications_enabled? ||
-          (!resend && participant.invitations_count > 0)
-
-        total_sent += 1
-
-        participant.invitations.create!
-      end
+      total_sent = Participants::SendInvitations.new(participants:, resend:).call
 
       succeed "Done! #{total_sent} invitations sent"
     end
@@ -63,16 +54,7 @@ class Avo::Resources::Participant < Avo::BaseResource
       resend = fields[:resend]
       participants = Array(resource.record || query.preload(:message_campaigns).all.to_a)
 
-      total_sent = 0
-
-      participants.each do |participant|
-        next if !participant.email_notifications_enabled? ||
-                (!resend && participant.message_campaigns.include?(message_campaign))
-
-        total_sent += 1
-
-        participant.messages.create!(message_campaign:)
-      end
+      total_sent = Participants::SendCampaignMessages.new(participants:, message_campaign:, resend:).call
 
       succeed "Done! #{total_sent} messages sent"
     end
