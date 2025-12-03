@@ -1,0 +1,11 @@
+<!--claude-->
+<%= index_field_wrapper(**field_wrapper_args) do %>
+  <div class="flex items-center gap-2">
+    <progress max="<%= @field.max %>" value="<%= @field.value %>" class="block w-24 rounded-full h-2 overflow-hidden bg-gray-200"></progress>
+    <% if @field.display_value %>
+      <span class="text-sm font-semibold whitespace-nowrap">
+        <%= @field.value %>/<%= @field.max %><%= @field.value_suffix if @field.value_suffix.present? %>
+      </span>
+    <% end %>
+  </div>
+<% end %>

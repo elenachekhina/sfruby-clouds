@@ -154,6 +154,9 @@ GEM
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
+    data_migrate (11.3.1)
+      activerecord (>= 6.1)
+      railties (>= 6.1)
     date (3.4.1)
     debug (1.11.0)
       irb (~> 1.10)
@@ -240,6 +243,8 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.15.1)
+    kramdown (2.5.1)
+      rexml (>= 3.3.9)
     language_server-protocol (3.17.0.5)
     launchy (3.1.1)
       addressable (~> 2.8)
@@ -541,6 +546,7 @@ DEPENDENCIES
   capybara-email
   csv
   cuprite
+  data_migrate (~> 11.3)
   debug
   factory_bot_rails
   faker
@@ -549,6 +555,7 @@ DEPENDENCIES
   fuubar
   hotwire-rails
   httparty
+  kramdown (~> 2.5)
   lefthook
   letter_opener_web
   lookbook

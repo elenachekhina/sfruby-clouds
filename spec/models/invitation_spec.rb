@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Participant do
+describe Invitation do
   let_it_be(:participant) { create(:participant) }
 
   describe ".create" do

@@ -53,6 +53,9 @@ gem "freezolite"
 
 gem "bootsnap", require: false
 
+gem "kramdown", "~> 2.5"
+gem "data_migrate", "~> 11.3"
+
 group :production do
   gem "sentry-ruby", "~> 5.15"
   gem "sentry-rails", "~> 5.15"

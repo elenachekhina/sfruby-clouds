@@ -1,6 +1,6 @@
 class Avo::Resources::Participant < Avo::BaseResource
   self.title = :full_name
-  self.includes = [:picked_cloud]
+  self.includes = [:picked_cloud, :invitations]
 
   self.search = {
     query: -> {
@@ -33,18 +33,30 @@ class Avo::Resources::Participant < Avo::BaseResource
       resend = fields[:resend]
       participants = Array(resource.record || query.all.to_a)
 
-      total_sent = 0
-
-      participants.each do |participant|
-        next if !participant.email_notifications_enabled? ||
-          (!resend && participant.invitations_count > 0)
-
-        total_sent += 1
-
-        participant.invitations.create!
-      end
+      total_sent = Participants::SendInvitations.new(participants:, resend:).call
 
       succeed "Done! #{total_sent} invitations sent"
+    end
+  end
+
+  class SendCampaign < Avo::BaseAction
+    self.name = "Send Campaign"
+    self.no_confirmation = false
+
+    def fields
+      field :message_campaign, as: :select, options: MessageCampaign.pluck(:name, :id).to_h,
+            required: true
+      field :resend, as: :boolean, help: "Check this to resend message campaign even if already sent"
+    end
+
+    def handle(query:, fields:, current_user:, resource:, **args)
+      message_campaign = MessageCampaign.find(fields[:message_campaign])
+      resend = fields[:resend]
+      participants = Array(resource.record || query.preload(:message_campaigns).all.to_a)
+
+      total_sent = Participants::SendCampaignMessages.new(participants:, message_campaign:, resend:).call
+
+      succeed "Done! #{total_sent} messages sent"
     end
   end
 
@@ -90,6 +102,7 @@ class Avo::Resources::Participant < Avo::BaseResource
 
   def actions
     action SendInvitation
+    action SendCampaign
     action BulkDelete
     action Avo::Actions::ImportParticipants
   end
