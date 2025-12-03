@@ -1,4 +1,5 @@
 class Avo::Resources::Invitation < Avo::BaseResource
+  self.title = -> { "Invitation ##{record.id}" }
   self.includes = [:participant]
 
   self.search = {

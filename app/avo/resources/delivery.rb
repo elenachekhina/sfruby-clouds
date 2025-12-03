@@ -1,5 +1,5 @@
 class Avo::Resources::Delivery < Avo::BaseResource
-  # self.includes = []
+  self.includes = [:participant, deliverable: :message_campaign]
   # self.attachments = []
   # self.search = {
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
@@ -8,7 +8,7 @@ class Avo::Resources::Delivery < Avo::BaseResource
   def fields
     field :id, as: :id
     field :participant, as: :belongs_to, searchable: true
-    field :deliverable, as: :belongs_to, polymorphic_as: :deliverable, types: %w[Avo::Resources::Message Avo::Resources::Invitation]
+    field :deliverable, as: :belongs_to, polymorphic_as: :deliverable, types: %w[Avo::Resources::Message Avo::Resources::Invitation], only_on: %i[show index]
     field :status, as: :select, enum: ::Delivery.statuses, readonly: true, sortable: true
     field :bounce_type
     field :created_at, as: :date_time, readonly: true, sortable: true

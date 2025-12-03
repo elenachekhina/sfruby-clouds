@@ -1,6 +1,6 @@
 class Avo::Resources::Participant < Avo::BaseResource
   self.title = :full_name
-  self.includes = [:picked_cloud]
+  self.includes = [:picked_cloud, :invitations]
 
   self.search = {
     query: -> {

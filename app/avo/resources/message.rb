@@ -1,5 +1,6 @@
 class Avo::Resources::Message < Avo::BaseResource
-  # self.includes = []
+  self.title = -> { "Message ##{record.id} - #{record.message_campaign.name}" }
+  self.includes = [:delivery, :participant, :message_campaign]
   # self.attachments = []
   # self.search = {
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
