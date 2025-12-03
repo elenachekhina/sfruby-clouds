@@ -6,5 +6,5 @@ class Delivery < ApplicationRecord
 
   enum :status, %w[sent opened bounced].index_by(&:itself)
 
-  after_update_commit -> { deliverable.try(:on_status_update) }, if: :saved_change_to_status?
+  after_update_commit -> { deliverable.on_status_update }, if: :saved_change_to_status?
 end

@@ -17,7 +17,7 @@ RSpec.describe Message, type: :model do
     end
   end
 
-  describe "delivery status update" do
+  describe "message_campaign counters update" do
     let_it_be(:message) { message_campaign.messages.create!(participant:) }
 
     it "updates the message_campaign count for opened_messages_count" do

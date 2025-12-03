@@ -1,7 +1,7 @@
 class ParticipantMailer < ApplicationMailer
   before_action do
     headers["X-MC-Track"] = "opens, clicks_htmlonly"
-    headers["X-MC-Metadata"] = { delivery_id: @delivery&.id }.compact.to_json
+    headers["X-MC-Metadata"] = { delivery_id: params[:delivery]&.id }.compact.to_json
   end
 
   def welcome

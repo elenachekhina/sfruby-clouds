@@ -1,5 +1,6 @@
 class Message < ApplicationRecord
   include Deliverable
+
   belongs_to :message_campaign, counter_cache: :sent_messages_count
 
   after_create_commit do

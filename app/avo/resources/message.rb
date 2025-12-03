@@ -7,13 +7,13 @@ class Avo::Resources::Message < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :participant, as: :belongs_to, searchable: true, readonly: true
+    field :participant, as: :belongs_to, readonly: true
     field :delivery, as: :has_one
-    field :message_campaign, as: :belongs_to, searchable: true, readonly: true
-    field :status, as: :select, enum: ::Delivery.statuses, sortable: true, readonly: true
+    field :message_campaign, as: :belongs_to, readonly: true
+    field :status, as: :select, enum: ::Delivery.statuses, readonly: true
     field :bounce_type
-    field :created_at, as: :date_time, readonly: true, sortable: true
-    field :opened_at, as: :date_time, readonly: true, sortable: true
-    field :bounced_at, as: :date_time, readonly: true, sortable: true
+    field :created_at, as: :date_time, readonly: true
+    field :opened_at, as: :date_time, readonly: true
+    field :bounced_at, as: :date_time, readonly: true
   end
 end
